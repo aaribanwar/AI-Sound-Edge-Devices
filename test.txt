@@ -7,3 +7,12 @@ steps
 3. git add .
 4. git commit -m 
 5. git push
+
+6. cd frontend
+7. npm install 
+(if node is not present/ npm not recognised)
+8. install node from official website
+9. restart vs code
+10. node -v: verify install
+11. npm install : installs everything from package.json automatically
+
