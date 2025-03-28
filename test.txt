@@ -1,0 +1,9 @@
+"This is a text to see how git clone works"
+
+steps
+
+1. git clone https://github.com/aaribanwar/AI-Sound-Edge-Devices
+2. git pull
+3. git add .
+4. git commit -m 
+5. git push
