@@ -7,10 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-<<<<<<< HEAD
-=======
 # Dependencies
->>>>>>> 6c440a9a4217658d7d83066b48bc2588b5c8bd1a
 node_modules
 dist
 dist-ssr
@@ -29,3 +26,8 @@ dist-ssr
 
 # Vite build files
 .vite/
+
+
+#python venv
+venv/
+ai_model/venv/
