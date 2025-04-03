@@ -31,3 +31,6 @@ dist-ssr
 #python venv
 venv/
 ai_model/venv/
+
+#datasets
+ai_model/datasets/
