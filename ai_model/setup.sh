@@ -8,9 +8,10 @@
 # To use this script, follow these steps:
 # 1. Open Git Bash in the project directory.
 # 2. Run the following command to execute the script:
-#    
+#    if in ai_model directory:
 #    ./setup.sh
-#
+#   if in project (root) directory run:
+#   ./ai_model/setup.sh
 # 3. The dataset will be downloaded and extracted automatically.
 #!/bin/bash
 
