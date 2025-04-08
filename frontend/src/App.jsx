@@ -1,27 +1,25 @@
+// src/App.jsx
+import React from "react";
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import Dashboard from "./components/Dashboard";
+import Alerts from "./pages/Alerts";
+import Logs from "./pages/Logs";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
-    <div className="dashboard">
-      <h1>🔊 Sound Recognition Dashboard</h1>
-
-      <div className="sections">
-        <div className="section alerts">
-          <h2>📢 Real-time Alerts</h2>
-          <p>No new alerts</p>
-        </div>
-
-        <div className="section logs">
-          <h2>📜 Alert Logs</h2>
-          <p>Previous detected sounds will appear here.</p>
-        </div>
-
-        <div className="section settings">
-          <h2>⚙️ Settings</h2>
-          <p>Configure your custom sounds & notifications.</p>
-        </div>
-      </div>
-    </div>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/logs" element={<Logs />} />
+        <Route path="/settings" element={<Settings />} />
+      </Routes>
+    </>
   );
 }
 
