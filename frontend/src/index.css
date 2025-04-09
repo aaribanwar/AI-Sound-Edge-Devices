@@ -12,6 +12,15 @@ body {
   padding: 20px;
 }
 
+/* Ensure navbar styles are not overridden */
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333;
+  padding: 10px 0;
+}
+
 .sections {
   display: flex;
   justify-content: space-around;
