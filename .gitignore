@@ -34,3 +34,13 @@ ai_model/venv/
 
 #datasets
 ai_model/datasets/
+
+#python cache
+__pycache__/
+
+
+ai_model/__pycache__/
+
+
+#backend
+backend/.env
