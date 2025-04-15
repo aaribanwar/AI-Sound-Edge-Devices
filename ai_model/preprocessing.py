@@ -1,65 +1,88 @@
-# preprocess_us8k.py
 import os
 import numpy as np
 import pandas as pd
 import librosa
+import librosa.display
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
+from sklearn.model_selection import train_test_split
 from tqdm import tqdm
+import warnings
+warnings.filterwarnings('ignore')
 
-# Constants
-BASE_DIR = "datasets/UrbanSound8K"
-AUDIO_DIR = os.path.join(BASE_DIR, "audio")
-METADATA_PATH = os.path.join(BASE_DIR, "metadata", "UrbanSound8K.csv")
-OUTPUT_PATH = "datasets"
+# Define audio augmentation pipeline
+AUGMENT = Compose([
+    AddGaussianNoise(min_amplitude=0.001, max_amplitude=0.015, p=0.3),
+    TimeStretch(min_rate=0.8, max_rate=1.25, p=0.3),
+    PitchShift(min_semitones=-4, max_semitones=4, p=0.4),
+    Shift(min_shift=-0.5, max_shift=0.5, p=0.2)
+])
+
+# Define paths and parameters
+METADATA_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets\UrbanSound8K\metadata\UrbanSound8K.csv"
+DATASET_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets\UrbanSound8K\audio"
+OUTPUT_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets"
+
 SAMPLE_RATE = 22050
-N_MELS = 64
-N_FFT = 1024
-HOP_LENGTH = 512
-FIXED_WIDTH = 128
+DURATION = 4  # seconds
+SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
 
-def extract_mel_spectrogram(file_path):
-    y, sr = librosa.load(file_path, sr=SAMPLE_RATE, mono=True)
-    mel_spec = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=N_FFT,
-                                               hop_length=HOP_LENGTH, n_mels=N_MELS)
-    mel_spec_db = librosa.power_to_db(mel_spec, ref=np.max)
+# Classes to augment
+classes_to_augment = ['jackhammer', 'children_playing', 'engine_idling']
 
-    # Pad or truncate to fixed width
-    if mel_spec_db.shape[1] < FIXED_WIDTH:
-        pad_width = FIXED_WIDTH - mel_spec_db.shape[1]
-        mel_spec_db = np.pad(mel_spec_db, ((0, 0), (0, pad_width)), mode='constant')
+# Initialize lists to store MFCC features and labels
+mfccs = []
+labels = []
+
+# Load metadata
+metadata = pd.read_csv(METADATA_PATH)
+
+print("🔄 Preprocessing audio files...")
+
+# Loop through each row in the metadata
+for index, row in tqdm(metadata.iterrows(), total=len(metadata)):
+    file_path = os.path.join(DATASET_PATH, f"fold{row['fold']}", row['slice_file_name'])
+    label = row['class']
+    signal, sr = librosa.load(file_path, sr=SAMPLE_RATE, duration=DURATION)
+
+    # Ensure the signal is of the correct length
+    if len(signal) < SAMPLES_PER_TRACK:
+        pad = SAMPLES_PER_TRACK - len(signal)
+        signal = np.pad(signal, (0, pad))
     else:
-        mel_spec_db = mel_spec_db[:, :FIXED_WIDTH]
+        signal = signal[:SAMPLES_PER_TRACK]
 
-    return mel_spec_db
+    # Extract MFCC features from the original signal
+    mfcc = librosa.feature.mfcc(y=signal, sr=sr, n_mfcc=40)
+    mfcc = mfcc.T  # Transpose to (time, features)
+    mfccs.append(mfcc)
+    labels.append(row['classID'])
 
-def preprocess_data():
-    metadata = pd.read_csv(METADATA_PATH)
+    # Augment only the specified classes
+    if label in classes_to_augment:
+        for _ in range(2):  # Create two augmented examples per sample
+            aug_signal = AUGMENT(samples=signal, sample_rate=sr)
+            mfcc_aug = librosa.feature.mfcc(y=aug_signal, sr=sr, n_mfcc=40).T
+            mfccs.append(mfcc_aug)
+            labels.append(row['classID'])
 
-    X = []
-    y = []
+# Pad MFCCs to equal length
+max_len = max(m.shape[0] for m in mfccs)
+X = np.array([np.pad(m, ((0, max_len - m.shape[0]), (0, 0)), mode='constant')
+              for m in mfccs])
+X = X[..., np.newaxis]  # Add channel dimension
 
-    print("Processing audio files...")
-    for index, row in tqdm(metadata.iterrows(), total=len(metadata)):
-        fold = f"fold{row['fold']}"
-        file_name = row['slice_file_name']
-        class_id = row['classID']
-        file_path = os.path.join(AUDIO_DIR, fold, file_name)
+y = np.array(labels)
 
-        try:
-            mel_spec = extract_mel_spectrogram(file_path)
-            X.append(mel_spec)
-            y.append(class_id)
-        except Exception as e:
-            print(f"Error processing {file_path}: {e}")
+# Save the processed data
+np.save(os.path.join(OUTPUT_PATH, "X_data.npy"), X)
+np.save(os.path.join(OUTPUT_PATH, "y_data.npy"), y)
 
-    X = np.array(X)[..., np.newaxis]  # Shape: (N, 64, 128, 1)
-    y = np.array(y)  # Shape: (N,)
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42)
+np.save(os.path.join(OUTPUT_PATH, "X_train.npy"), X_train)
+np.save(os.path.join(OUTPUT_PATH, "X_test.npy"), X_test)
+np.save(os.path.join(OUTPUT_PATH, "y_train.npy"), y_train)
+np.save(os.path.join(OUTPUT_PATH, "y_test.npy"), y_test)
 
-    print(f"Final dataset shape: X={X.shape}, y={y.shape}")
-
-    # Save
-    np.save(os.path.join(OUTPUT_PATH, "X.npy"), X)
-    np.save(os.path.join(OUTPUT_PATH, "y.npy"), y)
-    print("Saved X.npy and y.npy")
-
-if __name__ == "__main__":
-    preprocess_data()
+print("✅ Preprocessing complete. Saved X_train, X_test, y_train, y_test to datasets folder.")
