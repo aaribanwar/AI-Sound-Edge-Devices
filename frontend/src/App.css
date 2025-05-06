@@ -1,6 +1,13 @@
-/* Background Gradient */
-body {
+/* THEME BACKGROUNDS FOR BODY */
+body.theme-light {
   background: linear-gradient(to bottom right, #e0f7fa, #f3e5f5);
+}
+
+body.theme-dark {
+  background: linear-gradient(to bottom right, #1f1f1f, #2c2c2c);
+}
+
+body {
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
@@ -93,7 +100,6 @@ p {
 }
 
 /* Theme Toggle Button */
-/* Theme Toggle Button */
 .theme-toggle {
   align-items: center;
   gap: 2px;
@@ -105,6 +111,7 @@ p {
   font-weight: bold;
   font-size: 14px;
   transition: all 0.3s ease;
+  padding: 8px 16px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -114,41 +121,30 @@ p {
   box-shadow: 0 4px 12px rgba(30, 136, 229, 0.4);
 }
 
-
-/* ===================================== */
-/* DARK MODE OVERRIDES — for .app-container.dark */
-/* ===================================== */
-.app-container.dark body {
-  background: linear-gradient(to bottom right, #1f1f1f, #2c2c2c);
-}
-
-.app-container.dark .dashboard {
+/* Dark Mode Overrides */
+body.theme-dark .dashboard {
   background: #333;
   color: #fff;
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
-.app-container.dark .section {
+body.theme-dark .section {
   background: #444;
   color: #fff;
   border: 1px solid #666;
 }
 
-.app-container.dark h1,
-.app-container.dark h2,
-.app-container.dark p {
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark p {
   color: #fff;
 }
 
-.app-container.dark .navbar {
-  background-color: #111;
-}
-
-.app-container.dark .theme-toggle {
+body.theme-dark .theme-toggle {
   background-color: #ffa726;
   color: black;
 }
 
-.app-container.dark .theme-toggle:hover {
+body.theme-dark .theme-toggle:hover {
   background-color: #fb8c00;
 }
