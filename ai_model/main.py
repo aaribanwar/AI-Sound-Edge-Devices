@@ -1,44 +1,76 @@
-import os
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, LSTM, Dense, TimeDistributed, Reshape
+from tensorflow.keras import layers, models
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from sklearn.metrics import classification_report
+import os
 
-# Step 1: Load Preprocessed Dataset
-print("Loading dataset...")
-X_train = np.load("datasets/X_train.npy")
-print(f"Loaded dataset shape: {X_train.shape}")  # Should print (5000, 64, 128, 1)
+# Load preprocessed data (update paths accordingly)
+X_train = np.load('datasets/X_train.npy')
+X_test = np.load('datasets/X_test.npy')
+y_train = np.load('datasets/y_train.npy')
+y_test = np.load('datasets/y_test.npy')
 
-# Step 2: Define the CNN + LSTM Model
-model = Sequential([
-    # CNN layers
-    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(64, 128, 1)),
-    MaxPooling2D((2, 2)),
-
-    Conv2D(64, (3, 3), activation='relu', padding='same'),
-    MaxPooling2D((2, 2)),
-
-    Flatten(),
+# Define the model (CRNN: CNN + LSTM/GRU)
+def build_model(input_shape, num_classes):
+    model = models.Sequential()
     
-    # Reshape to fit LSTM input (time steps, features)
-    Reshape((64, -1)),
+    # CNN layers with BatchNormalization
+    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+    model.add(layers.BatchNormalization())
+    model.add(layers.MaxPooling2D((2, 2)))
+    
+    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.BatchNormalization())
+    model.add(layers.MaxPooling2D((2, 2)))
+    
+    model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+    model.add(layers.BatchNormalization())
+    model.add(layers.MaxPooling2D((2, 2)))
 
-    # LSTM layer
-    LSTM(128, return_sequences=False),
+    # LSTM layers (Bidirectional LSTM)
+    model.add(layers.Reshape((-1, 128)))  # Reshape to feed into LSTM
+    model.add(layers.Bidirectional(layers.LSTM(128, return_sequences=True)))
+    model.add(layers.Bidirectional(layers.LSTM(128)))
 
-    # Fully connected layer
-    Dense(64, activation='relu'),
-    Dense(10, activation='softmax')  # Assuming 10 classes for classification
-])
+    # Fully connected layers
+    model.add(layers.Dense(128, activation='relu'))
+    model.add(layers.Dropout(0.5))
+    model.add(layers.Dense(num_classes, activation='softmax'))
 
-# Step 3: Compile the Model
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=Adam(), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    return model
 
-# Step 4: Train the Model
-print("Starting training...")
-model.fit(X_train, np.random.rand(5000, 10), epochs=10, batch_size=32)  # Replace with actual labels
+# Model parameters
+input_shape = X_train.shape[1:]  # Shape of input (time, features, 1)
+num_classes = len(np.unique(y_train))  # Number of classes
 
-# Step 5: Save the Model
-model.save("cnn_lstm_sound.h5")
-print("Model training complete. Saved as cnn_lstm_sound.h5")  
+# Build the model
+model = build_model(input_shape, num_classes)
+
+# Define callbacks
+checkpoint = ModelCheckpoint('best_model.h5', save_best_only=True, monitor='val_loss', mode='min', verbose=1)
+early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+
+# Train the model
+model.fit(X_train, y_train, epochs=50, batch_size=32, validation_data=(X_test, y_test),
+          callbacks=[checkpoint, early_stop])
+
+# Evaluate the model on the test set
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=2)
+print(f"Test accuracy: {test_acc:.4f}")
+
+# Save the model
+model.save('sound_classification_model.h5')
+
+# Convert model to TFLite for edge deployment
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]  # Apply optimization
+tflite_model = converter.convert()
+
+# Save the TFLite model
+with open('sound_classification_model.tflite', 'wb') as f:
+    f.write(tflite_model)
+
+print("✅ Model saved and converted to TFLite format.")
