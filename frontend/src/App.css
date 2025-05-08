@@ -126,6 +126,21 @@ body.theme-dark .dashboard {
   background: #333;
   color: #fff;
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+  /* Different Section Colors */
+.alerts {
+  border-top: 5px solid #e53935;
+  color: #e53935;
+}
+
+.logs {
+  border-top: 5px solid #ffb300;
+  color: #ffb300;
+}
+
+.settings {
+  border-top: 5px solid #1e88e5;
+  color: #1e88e5;
+}
 }
 
 body.theme-dark .section {

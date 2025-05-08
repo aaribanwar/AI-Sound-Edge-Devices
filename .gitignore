@@ -35,3 +35,7 @@ ai_model/venv/
 #datasets
 ai_model/datasets/
 
+#backend Sensitive
+backend/node_modules
+backend/.env
+
