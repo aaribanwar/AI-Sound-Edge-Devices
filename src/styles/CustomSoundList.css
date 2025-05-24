@@ -1,0 +1,12 @@
+/* src/styles/CustomSoundList.css */
+.custom-sound-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.custom-sound-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}

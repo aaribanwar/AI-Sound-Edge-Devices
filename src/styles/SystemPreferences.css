@@ -1,0 +1,8 @@
+/* src/styles/SystemPreferences.css */
+.system-preferences {
+  margin-top: 2rem;
+}
+.system-preferences label {
+  display: block;
+  margin-top: 0.5rem;
+}

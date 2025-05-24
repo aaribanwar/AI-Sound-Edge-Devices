@@ -1,0 +1,24 @@
+/* src/styles/Sidebar.css */
+.sidebar {
+  width: 200px;
+  background: var(--primary);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar a {
+  color: white;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sidebar a:hover {
+  background: var(--accent);
+  color: black;
+}

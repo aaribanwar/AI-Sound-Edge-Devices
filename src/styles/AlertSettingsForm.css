@@ -1,0 +1,5 @@
+/* src/styles/AlertSettingsForm.css */
+.alert-settings-form label {
+  display: block;
+  margin: 0.5rem 0;
+}
