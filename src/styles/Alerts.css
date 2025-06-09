@@ -1,0 +1,110 @@
+.alerts-page {
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.alerts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.alert-card {
+  background-color: var(--card-bg, #f5f5f5);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-card h3 {
+  margin-bottom: 1rem;
+}
+
+.alert-card form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.alert-card form input,
+.alert-card form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.alert-card form button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #4b0082;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.alert-card form button:hover {
+  background-color: #36006e;
+}
+a/* Alerts.css */
+
+.alerts-page {
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.alerts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.alert-card {
+  background-color: var(--card-bg); /* Uses theme variable now */
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.alert-card h3 {
+  margin-bottom: 1rem;
+}
+
+.alert-card form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.alert-card form input,
+.alert-card form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: var(--input-bg, #fff);
+  color: var(--text-color);
+}
+
+.alert-card form button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #4b0082;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.alert-card form button:hover {
+  background-color: #36006e;
+}

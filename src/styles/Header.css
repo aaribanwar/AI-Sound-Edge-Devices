@@ -1,0 +1,42 @@
+/* src/styles/Header.css */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--card);
+  padding: 16px 32px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.theme-toggle {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* Header.css or wherever your Header styles are */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;          /* full width */
+  max-width: 1200px;    /* or whatever max width your layout uses */
+  margin: 0 auto;       /* center horizontally */
+  padding: 0 1.5rem;    /* side padding */
+}

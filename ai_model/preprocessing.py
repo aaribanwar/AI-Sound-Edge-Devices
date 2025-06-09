@@ -18,9 +18,10 @@ AUGMENT = Compose([
 ])
 
 # Define paths and parameters
-METADATA_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets\UrbanSound8K\metadata\UrbanSound8K.csv"
-DATASET_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets\UrbanSound8K\audio"
-OUTPUT_PATH = r"C:\Users\aniru\OneDrive\Desktop\miniProject\AI-Sound-Edge-Devices\ai_model\datasets"
+METADATA_PATH = "./datasets/UrbanSound8K/metadata/UrbanSound8K.csv"
+DATASET_PATH = "./datasets/UrbanSound8K/audio"
+OUTPUT_PATH = "./datasets"
+
 
 SAMPLE_RATE = 22050
 DURATION = 4  # seconds

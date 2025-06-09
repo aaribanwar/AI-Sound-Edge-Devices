@@ -7,7 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+<<<<<<< HEAD
+=======
 # Dependencies
+>>>>>>> 7e636d6fda93b50a190fb3fa81e36bf54798611a
 node_modules
 dist
 dist-ssr
@@ -23,6 +26,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
+=======
 
 # Vite build files
 .vite/
@@ -35,3 +40,8 @@ ai_model/venv/
 #datasets
 ai_model/datasets/
 
+#backend Sensitive
+backend/node_modules
+backend/.env
+
+>>>>>>> 7e636d6fda93b50a190fb3fa81e36bf54798611a

@@ -1,0 +1,5 @@
+/* src/styles/SoundGraph.css */
+.sound-graph {
+  flex: 2;
+  min-width: 300px;
+}

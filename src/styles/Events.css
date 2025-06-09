@@ -1,0 +1,12 @@
+/* src/styles/Events.css */
+.events-page {
+  max-width: 800px;
+  margin: auto;
+}
+/* Events.css */
+.events-page {
+  padding: 2rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  max-width: 100%; /* Ensure full width */
+}

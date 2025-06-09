@@ -1,0 +1,17 @@
+/* src/styles/SoundEventTable.css */
+.sound-event-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sound-event-table th,
+.sound-event-table td {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.sound-event-table tr:hover {
+  background-color: var(--hover);
+  cursor: pointer;
+}

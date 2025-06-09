@@ -1,0 +1,10 @@
+/* src/styles/DeviceAlertChannels.css */
+.device-alert-channels ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.device-alert-channels li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}

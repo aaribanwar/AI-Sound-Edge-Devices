@@ -1,0 +1,12 @@
+/* src/styles/AlertHistory.css */
+.alert-history ul {
+  list-style: none;
+  padding: 0;
+}
+
+.alert-history li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+}
