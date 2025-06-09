@@ -77,12 +77,58 @@ y = np.array(labels)
 np.save(os.path.join(OUTPUT_PATH, "X_data.npy"), X)
 np.save(os.path.join(OUTPUT_PATH, "y_data.npy"), y)
 
-# Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, stratify=y, random_state=42)
-np.save(os.path.join(OUTPUT_PATH, "X_train.npy"), X_train)
-np.save(os.path.join(OUTPUT_PATH, "X_test.npy"), X_test)
-np.save(os.path.join(OUTPUT_PATH, "y_train.npy"), y_train)
-np.save(os.path.join(OUTPUT_PATH, "y_test.npy"), y_test)
+# Convert lists to numpy arrays
+X = np.array(mfccs)
+y = np.array(labels)
 
-print("✅ Preprocessing complete. Saved X_train, X_test, y_train, y_test to datasets folder.")
+# Reshape X for the model
+max_len = max(m.shape[0] for m in mfccs)
+X_padded = np.array([np.pad(m, ((0, max_len - m.shape[0]), (0, 0)), mode='constant') for m in mfccs])
+X_padded = X_padded[..., np.newaxis] # Add channel dimension
+
+print("✅ Preprocessing complete.")
+print(f"Shape of X: {X_padded.shape}")
+print(f"Shape of y: {y.shape}")
+
+# Define the split of classes for meta-learning
+# You can change these class IDs based on your preference
+all_class_ids = np.unique(y)
+np.random.shuffle(all_class_ids) # Shuffle for a random split
+
+meta_train_classes = all_class_ids[:6]
+meta_val_classes = all_class_ids[6:8]
+meta_test_classes = all_class_ids[8:]
+
+print(f"\nMeta-Train Class IDs: {meta_train_classes}")
+print(f"Meta-Val Class IDs: {meta_val_classes}")
+print(f"Meta-Test Class IDs: {meta_test_classes}")
+
+# Function to split the data based on class IDs
+def split_data_by_classes(X, y, class_ids):
+    indices = np.isin(y, class_ids)
+    return X[indices], y[indices]
+
+# Create the data splits
+X_meta_train, y_meta_train = split_data_by_classes(X_padded, y, meta_train_classes)
+X_meta_val, y_meta_val = split_data_by_classes(X_padded, y, meta_val_classes)
+X_meta_test, y_meta_test = split_data_by_classes(X_padded, y, meta_test_classes)
+
+
+# Save the new FSL datasets
+print("\n💾 Saving datasets for Few-Shot Learning...")
+np.save(os.path.join(OUTPUT_PATH, "X_meta_train.npy"), X_meta_train)
+np.save(os.path.join(OUTPUT_PATH, "y_meta_train.npy"), y_meta_train)
+np.save(os.path.join(OUTPUT_PATH, "X_meta_val.npy"), X_meta_val)
+np.save(os.path.join(OUTPUT_PATH, "y_meta_val.npy"), y_meta_val)
+np.save(os.path.join(OUTPUT_PATH, "X_meta_test.npy"), X_meta_test)
+np.save(os.path.join(OUTPUT_PATH, "y_meta_test.npy"), y_meta_test)
+
+print("✅ FSL data saved successfully.")
+
+
+# We are keeping this function as it might be useful later for single predictions
+def preprocess_custom_sound(audio, sr=22050, max_len=max_len):
+    audio = audio.flatten()
+    mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=40).T
+    mfcc = np.pad(mfcc, ((0, max_len - mfcc.shape[0]), (0, 0)), mode='constant')
+    return mfcc[np.newaxis, ..., np.newaxis]
