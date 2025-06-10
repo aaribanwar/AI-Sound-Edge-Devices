@@ -1,0 +1,5 @@
+/* src/styles/SoundTrainingStatus.css */
+.sound-training-status p {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}

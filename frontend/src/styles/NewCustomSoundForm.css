@@ -1,0 +1,7 @@
+/* src/styles/NewCustomSoundForm.css */
+.new-custom-sound-form input {
+  padding: 0.5rem;
+  background: var(--background-alt);
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}

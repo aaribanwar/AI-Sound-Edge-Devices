@@ -1,0 +1,15 @@
+/* src/styles/DeviceStatusCard.css */
+.device-status {
+  flex: 1;
+  min-width: 200px;
+}
+
+.device-status ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.device-status li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}

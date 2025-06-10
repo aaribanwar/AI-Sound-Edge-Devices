@@ -1,0 +1,14 @@
+/* src/styles/LiveSoundFeed.css */
+.live-feed {
+  flex: 1;
+  min-width: 300px;
+}
+
+.feed-log {
+  background: var(--background-alt);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 8px;
+  height: 200px;
+  overflow-y: auto;
+}

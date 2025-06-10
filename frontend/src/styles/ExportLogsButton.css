@@ -1,0 +1,9 @@
+/* src/styles/ExportLogsButton.css */
+.export-logs-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: blue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

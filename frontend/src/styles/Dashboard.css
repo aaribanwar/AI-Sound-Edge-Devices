@@ -1,0 +1,47 @@
+/* src/styles/Dashboard.css */
+
+.dashboard-container {
+  padding: 20px;
+  background-color: var(--background);
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.dashboard-card {
+  background-color: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  overflow: auto;
+  min-height: 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+.health-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+}
+
+.health-list li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+}
+.dashboard-container {
+  background-color: var(--background);
+  color: var(--text);
+
+}

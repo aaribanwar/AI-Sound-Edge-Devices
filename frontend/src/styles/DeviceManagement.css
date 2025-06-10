@@ -1,0 +1,12 @@
+/* src/styles/DeviceManagement.css */
+.device-management {
+  margin-top: 2rem;
+}
+.device-management button {
+  margin-top: 0.5rem;
+  background-color: var(--accent);
+  color: white;
+  background-color: blue;
+  border: none;
+  padding: 0.5rem 1rem;
+}

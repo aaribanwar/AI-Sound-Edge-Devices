@@ -1,0 +1,15 @@
+/* src/styles/UserProfileForm.css */
+.user-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.user-profile-form input {
+  padding: 0.5rem;
+}
+.user-profile-form button {
+  background: var(--accent);
+  color: white;
+  padding: 0.5rem;
+  border: none;
+}

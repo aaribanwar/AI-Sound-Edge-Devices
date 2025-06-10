@@ -1,0 +1,18 @@
+/* src/styles/SystemSummary.css */
+.system-summary {
+  flex: 1;
+  min-width: 200px;
+}
+
+.summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-grid div {
+  background: var(--background-alt);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
